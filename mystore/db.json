@@ -1,0 +1,57 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+  "product": [
+    {
+      "id": 1,
+      "title": "iPhone",
+      "price": 1700,
+      "stock": 100
+    },
+    {
+      "id": 2,
+      "title": "S10",
+      "price": 1500,
+      "stock": 100
+    },
+    {
+      "id": 3,
+      "title": "Pixel",
+      "price": 1200,
+      "stock": 0
+    },
+    {
+      "id": 4,
+      "title": "Note",
+      "price": 1000,
+      "stock": 10
+    },
+    {
+      "title": "BigMi",
+      "stock": 10,
+      "price": 1000,
+      "id": 5
+    },
+    {
+      "title": "ZhongMi",
+      "stock": 10,
+      "price": 650,
+      "id": 6
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Redux</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.1/redux.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux-thunk/2.3.0/redux-thunk.js"></script>
+  </head>
+  <body>
+    <!-- <button onclick="store.dispatch(incActionCreator(10))">Increase</button>
+    <span id="res">0</span>
+    <button onclick="store.dispatch(decActionCreator(7))">Decrease</button> -->
+    <button onclick="store.dispatch(getProductsAsyncActionCreator())">
+      Get Products
+    </button>
+    <script>
+      // First step - define the action
+      let incAction = { type: "INC", increment: 1 };
+      let decAction = { type: "DEC", decrement: 1 };
+
+      // Action - Part 2
+      let incActionCreator = increment => {
+        return {
+          type: "INC",
+          increment
+        };
+      };
+
+      let decActionCreator = decrement => {
+        return {
+          type: "DEC",
+          decrement
+        };
+      };
+
+      // Action - Part 3
+      let getProductsActionCreator = (event, data) => {
+        return {
+          type: event,
+          data: data
+        };
+      };
+
+      function getProductsAsyncActionCreator() {
+        return async function(dispatch) {
+          try {
+            dispatch(getProductsActionCreator("GET_PRODUCT_INIT"));
+            let data = await fetch("http://localhost:4000/product").then(
+              response => response.json()
+            );
+            dispatch(getProductsActionCreator("GET_PRODUCT_SUCCESS", data));
+            // dispatch({ type: "GET_PRODUCT_SUCCESS", data });
+          } catch (err) {
+            // dispatch(getProductsActionCreator("GET_PRODUCT_FAILURE"));
+          }
+        };
+      }
+
+      // Second step - define the reducer
+      function counterReducer(state = { counter: 0 }, action) {
+        switch (action.type) {
+          case "INC":
+            return { counter: state.counter + action.increment };
+          case "DEC":
+            return { counter: state.counter - action.decrement };
+          default:
+            return state;
+        }
+      }
+
+      // Reducer - Part 2
+      let utilReducer = (state = { time: new Date().getTime() }, action) => {
+        switch (action.type) {
+          case "getTime":
+            return {
+              ...state,
+              time: new Date().getTime()
+            };
+          default:
+            return state;
+        }
+      };
+
+      // Reducer - Part 3
+      let productReducer = (state, action) => {
+        state = { products: [], isLoading: false };
+        switch (action.type) {
+          case "GET_PRODUCT_INIT":
+            return { ...state, isLoading: true };
+          case "GET_PRODUCT_SUCCESS":
+            return { ...state, products: action.data, isLoading: false };
+          default:
+            return { state };
+        }
+      };
+
+      // Third step - define the store
+      // const store = Redux.createStore(counterReducer);
+
+      // Store - Part 2
+      const rootReducer = Redux.combineReducers({
+        counterState: counterReducer,
+        utilState: utilReducer,
+        productState: productReducer // Part 3
+      });
+
+      const store = Redux.createStore(
+        rootReducer,
+        Redux.applyMiddleware(ReduxThunk.default) // Part 3
+      );
+
+      // store.subscribe(() => {
+      //   document.querySelector(
+      //     "#res"
+      //   ).innerText = store.getState().counterState.counter;
+      // });
+
+      store.subscribe(() => console.log(store.getState())); // Part 3
+    </script>
+  </body>
+</html>
